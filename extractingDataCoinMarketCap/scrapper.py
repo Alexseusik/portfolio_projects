@@ -5,17 +5,19 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 import os
+import shutil
 
 indexes = [int(x) for x in range(1, 10)]  # From 1 page to 9
 
 urls = [f'https://coinmarketcap.com/nft/upcoming/?page={i}' for i in indexes]
 
 # creating dirs
-for i in indexes:
-    try:
-        os.mkdir(f'page{i}')
-    except OSError:
-        pass
+if os.path.isfile('json_data.json') is False:
+    for i in indexes:
+        try:
+            os.mkdir(f'page{i}')
+        except OSError:
+            pass
 
 # SAVING PAGES TO HAVE BETTER ACCESS AND DO NOT OVER LOAD SITE
 for url, i in zip(urls, indexes):
@@ -77,7 +79,11 @@ for dr, i in zip(dir_list, indexes):
             full_date.append(data_dict)
             print(f'{NAME} info is added to file \n\n\n')
 
-json_full_data = json.dumps(full_date, indent=4)
+json_full_data = json.dumps(full_date, indent=2)
+
+for dr in dir_list:
+    shutil.rmtree(dr)
+# Deleting unusful files containing pages of our site
 
 with open('json_data.json', 'w+') as f:
     f.write(json_full_data)
