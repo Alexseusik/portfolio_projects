@@ -7,7 +7,12 @@ from bs4 import BeautifulSoup
 import os
 import shutil
 
-indexes = [int(x) for x in range(1, 10)]  # From 1 page to 9
+full_data = []
+
+url_index = BeautifulSoup(requests.get('https://coinmarketcap.com/nft/upcoming/').text, 'lxml')\
+    .find_all('li', class_='page')[-1].text
+
+indexes = [int(x) for x in range(1, int(url_index)+1)]  # From 1 page to last
 
 urls = [f'https://coinmarketcap.com/nft/upcoming/?page={i}' for i in indexes]
 
@@ -27,12 +32,17 @@ for url, i in zip(urls, indexes):
             f.write(page)
             f.close()
 
-dir_list = sorted(os.listdir())[:-1]  # To receive only names of dirs without other files
-
-full_date = []
+dir_list = []
+for dr in sorted(os.listdir()):
+    dr_name = re.search('page\d+', dr)
+    if dr_name is not None:
+        dir_list.append(dr_name.group(0))
+    else:
+        continue
+# To receive only names of dirs without other files
 
 if os.path.isfile('json_data.json'):
-    print('File is exist!')
+    print('File exists!')
     sys.exit()
 
 for dr, i in zip(dir_list, indexes):
@@ -76,10 +86,10 @@ for dr, i in zip(dir_list, indexes):
                 'PRE_SALE' : PRE_SALE,
                 'SALE' : SALE
             }
-            full_date.append(data_dict)
+            full_data.append(data_dict)
             print(f'{NAME} info is added to file \n\n\n')
 
-json_full_data = json.dumps(full_date, indent=2)
+json_full_data = json.dumps(full_data, indent=2)
 
 for dr in dir_list:
     shutil.rmtree(dr)
