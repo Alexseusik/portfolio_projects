@@ -1,9 +1,6 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import csv
-import requests
-from bs4 import BeautifulSoup
 
 profile_url = 'https://www.espeakers.com/s/nsas/profile/'
 url = 'https://www.espeakers.com/s/nsas/search?available_on=&awards&budget=0%2C10&bureau_id=304&distance=100&fee=false&items_per_page=3701&language=en&location=&norecord=false&nt=0&page=0&presenter_type=&q=%5B%5D&require&review=false&sort=speakername&video=false&virtual=false'
