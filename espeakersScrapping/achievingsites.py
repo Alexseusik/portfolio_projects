@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
-urls = [url.strip() for url in open('result_email_urls.txt').readlines()][3095:]
+urls = [url.strip() for url in open('result_email_urls.txt').readlines()]
 browser = webdriver.Chrome(executable_path='/Users/alexseyhnibida/Desktop/work/espeakersScrapping/chromedriver')
 
 with open('sites2.txt', 'a') as f:
